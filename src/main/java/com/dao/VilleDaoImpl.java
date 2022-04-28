@@ -68,14 +68,14 @@ public class VilleDaoImpl implements VilleDao {
             preparedStatement = connexion.prepareStatement(
                     "UPDATE ville_france " +
                             "SET " +
-                            "Nom_commune=?," +
-                            "Code_postal=?," +
-                            "Libelle_acheminement=?," +
-                            "Ligne_5=?," +
-                            "Latitude=?," +
-                            "Longitude=? " +
+                                "Nom_commune=?," +
+                                "Code_postal=?," +
+                                "Libelle_acheminement=?," +
+                                "Ligne_5=?," +
+                                "Latitude=?," +
+                                "Longitude=? " +
                             "WHERE " +
-                            "Code_commune_INSEE=?");
+                                "Code_commune_INSEE=?");
             preparedStatement.setString(1, ville.getNomCommune());
             preparedStatement.setString(2, String.valueOf(ville.getCodePostal()));
             preparedStatement.setString(3, String.valueOf(ville.getLibelleAcheminement()));

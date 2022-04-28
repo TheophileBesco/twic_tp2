@@ -21,7 +21,7 @@ public class DaoFactory {
         } catch (ClassNotFoundException ignored) {
         }
         return new DaoFactory(
-                "jdbc:mysql://localhost:3306/twic", "root", "network");
+                "jdbc:mysql://localhost:3306/twic?useSSL=false", "root", "network");
     }
 
     public Connection getConnection() throws SQLException {

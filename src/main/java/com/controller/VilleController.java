@@ -57,11 +57,11 @@ public class VilleController {
 		Ville currentVille = finder.findVilleByCodeCommune(codeCommuneInsee);
 		VilleEditer editer = new VilleEditer();
 		String message = "Ville modifiée.";
+		ville.setCodeCommuneInsee(Integer.parseInt(codeCommuneInsee));
 		if(currentVille == null){
 			editer.saveVille(ville);
 			message = "Ville créée.";
 		} else{
-			ville.setCodeCommuneInsee(Integer.parseInt(codeCommuneInsee));
 			editer.editVille(ville);
 		}
 		return message;
