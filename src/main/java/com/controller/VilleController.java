@@ -1,12 +1,9 @@
 package com.controller;
 
 import com.beans.Ville;
-import com.dao.DaoFactory;
-import com.dao.VilleDao;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.forms.VilleFinder;
+import com.forms.VilleEditer;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Locale;
@@ -14,15 +11,12 @@ import java.util.Locale;
 @RestController
 public class VilleController {
 
-	private VilleDao villeDao;
-
-	@RequestMapping(value="/ville", method=RequestMethod.GET)
+	@GetMapping(value="/ville")
 	public String get(@RequestParam(required  = false, value="codePostal") String codePostal) {
-		DaoFactory daoFactory = DaoFactory.getInstance();
-		this.villeDao = daoFactory.getVilleDao();
+		VilleFinder finder = new VilleFinder();
 		List<Ville> villes = (codePostal == null)?
-				this.villeDao.listVilles():
-				this.villeDao.listVillesByCodePostal(codePostal);
+				finder.listVilles():
+				finder.findVilleByCodePostal(codePostal);
 		String villesString = "";
 		if(villes.isEmpty()){
 			villesString = "Aucune ville ne correspond à ce code postal.";
@@ -35,8 +29,54 @@ public class VilleController {
 		return villesString;
 	}
 
-	@RequestMapping(value="/ville", method=RequestMethod.POST)
-	public String post(){
-		return "plopost";
+	@PostMapping(value = "/villesave")
+	public String post(@RequestParam(value="Code_commune_INSEE") String codeCommuneInsee,
+					   @RequestParam(value="Nom_commune") String nomCommune,
+					   @RequestParam(value="Code_postal") String codePostal,
+					   @RequestParam(value="Libelle_acheminement") String libelle,
+					   @RequestParam(value="Ligne_5") String ligne5,
+					   @RequestParam(value="Latitude") String latitude,
+					   @RequestParam(value="Longitude") String longitude){
+		VilleFinder finder = new VilleFinder();
+		Ville ville = finder.findVilleByCodeCommune(codeCommuneInsee);
+		VilleEditer saver = new VilleEditer();
+		if(ville == null){
+			saver.saveVille(
+					new Ville(Integer.parseInt(codeCommuneInsee),nomCommune,Integer.parseInt(codePostal),
+							libelle,ligne5,Float.parseFloat(latitude),Float.parseFloat(longitude)));
+			return "Ville créée.";
+		} else{
+			return "Ville déjà existante.";
+		}
+	}
+
+	@PutMapping(value = "/villeput/{codeCommuneInsee}")
+	public String put(@PathVariable String codeCommuneInsee,
+					  @RequestBody Ville ville){
+		VilleFinder finder = new VilleFinder();
+		Ville currentVille = finder.findVilleByCodeCommune(codeCommuneInsee);
+		VilleEditer editer = new VilleEditer();
+		String message = "Ville modifiée.";
+		if(currentVille == null){
+			editer.saveVille(ville);
+			message = "Ville créée.";
+		} else{
+			ville.setCodeCommuneInsee(Integer.parseInt(codeCommuneInsee));
+			editer.editVille(ville);
+		}
+		return message;
+	}
+
+	@DeleteMapping(value = "/villedelete/{codeCommuneInsee}")
+	public String delete(@PathVariable String codeCommuneInsee){
+		VilleFinder finder = new VilleFinder();
+		Ville ville = finder.findVilleByCodeCommune(codeCommuneInsee);
+		String message = "Ville introuvable.";
+		if(ville != null){
+			VilleEditer editer = new VilleEditer();
+			editer.deleteVille(codeCommuneInsee);
+			message = "Ville supprimée.";
+		}
+		return message;
 	}
 }

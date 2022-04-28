@@ -20,7 +20,7 @@ public class Ville {
     }
 
     public int getCodeCommuneInsee() {
-        return codeCommuneInsee;
+        return this.codeCommuneInsee;
     }
 
     public void setCodeCommuneInsee(int codeCommuneInsee) {
@@ -28,7 +28,7 @@ public class Ville {
     }
 
     public String getNomCommune() {
-        return nomCommune;
+        return this.nomCommune;
     }
 
     public void setNomCommune(String nomCommune) {
@@ -36,7 +36,7 @@ public class Ville {
     }
 
     public int getCodePostal() {
-        return codePostal;
+        return this.codePostal;
     }
 
     public void setCodePostal(int codePostal) {
@@ -44,7 +44,7 @@ public class Ville {
     }
 
     public String getLibelleAcheminement() {
-        return libelleAcheminement;
+        return this.libelleAcheminement;
     }
 
     public void setLibelleAcheminement(String libelleAcheminement) {
@@ -52,7 +52,7 @@ public class Ville {
     }
 
     public String getLigne5() {
-        return ligne5;
+        return this.ligne5;
     }
 
     public void setLigne5(String ligne5) {
@@ -60,7 +60,7 @@ public class Ville {
     }
 
     public float getLatitude() {
-        return latitude;
+        return this.latitude;
     }
 
     public void setLatitude(float latitude) {
@@ -68,7 +68,7 @@ public class Ville {
     }
 
     public float getLongitude() {
-        return longitude;
+        return this.longitude;
     }
 
     public void setLongitude(float longitude) {
