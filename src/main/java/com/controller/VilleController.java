@@ -12,21 +12,12 @@ import java.util.Locale;
 public class VilleController {
 
 	@GetMapping(value="/ville")
-	public String get(@RequestParam(required  = false, value="codePostal") String codePostal) {
+	public List<Ville> get(@RequestParam(required  = false, value="codePostal") String codePostal) {
 		VilleFinder finder = new VilleFinder();
 		List<Ville> villes = (codePostal == null)?
 				finder.listVilles():
 				finder.findVilleByCodePostal(codePostal);
-		String villesString = "";
-		if(villes.isEmpty()){
-			villesString = "Aucune ville ne correspond à ce code postal.";
-		} else{
-			for(Ville ville:villes){
-				villesString += ville.getNomCommune().toLowerCase(Locale.ROOT)+", ";
-			}
-			villesString = villesString.substring(0,villesString.length()-2);
-		}
-		return villesString;
+		return villes;
 	}
 
 	@PostMapping(value = "/villesave")

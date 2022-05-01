@@ -5,6 +5,7 @@ import com.beans.Ville;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class VilleDaoImpl implements VilleDao {
 
@@ -24,7 +25,7 @@ public class VilleDaoImpl implements VilleDao {
             connexion = daoFactory.getConnection();
             statement = connexion.createStatement();
             resultat = statement.executeQuery(
-                    "SELECT * FROM ville_france WHERE Code_commune_INSEE='"+codeCommuneInsee+"';"
+                    "SELECT * FROM ville_france WHERE Code_commune_INSEE='"+codeCommuneInsee+"' ORDER BY Nom_commune ASC;"
             );
             while (resultat.next()) {
                 ville = new Ville(resultat.getInt(1), resultat.getString(2), resultat.getInt(3),
@@ -47,9 +48,9 @@ public class VilleDaoImpl implements VilleDao {
             connexion = daoFactory.getConnection();
             preparedStatement = connexion.prepareStatement("INSERT INTO ville_france VALUE(?,?,?,?,?,?,?);");
             preparedStatement.setString(1, String.valueOf(ville.getCodeCommuneInsee()));
-            preparedStatement.setString(2, ville.getNomCommune());
+            preparedStatement.setString(2, ville.getNomCommune().toUpperCase(Locale.ROOT));
             preparedStatement.setString(3, String.valueOf(ville.getCodePostal()));
-            preparedStatement.setString(4, String.valueOf(ville.getLibelleAcheminement()));
+            preparedStatement.setString(4, ville.getLibelleAcheminement().toUpperCase(Locale.ROOT));
             preparedStatement.setString(5, ville.getLigne5());
             preparedStatement.setString(6, String.valueOf(ville.getLatitude()));
             preparedStatement.setString(7, String.valueOf(ville.getLongitude()));
@@ -116,7 +117,7 @@ public class VilleDaoImpl implements VilleDao {
         try {
             connexion = daoFactory.getConnection();
             statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT * FROM ville_france;");
+            resultat = statement.executeQuery("SELECT * FROM ville_france ORDER BY Nom_commune ASC;");
 
             while (resultat.next()) {
                 int codeCommuneInsee = Integer.parseInt(resultat.getString("Code_commune_INSEE"));
@@ -147,7 +148,7 @@ public class VilleDaoImpl implements VilleDao {
         try {
             connexion = daoFactory.getConnection();
             statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT * FROM ville_france WHERE Code_postal="+codePostal+";");
+            resultat = statement.executeQuery("SELECT * FROM ville_france WHERE Code_postal="+codePostal+" ORDER BY Nom_commune ASC;");
 
             while (resultat.next()) {
                 int codeCommuneInsee = Integer.parseInt(resultat.getString("Code_commune_INSEE"));
